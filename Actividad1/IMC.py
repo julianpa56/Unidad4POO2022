@@ -13,8 +13,8 @@ class Aplicacion(object):
         self.__ventana.title("Calculadora de IMC")
 
         # --------- CREACION DE LOS LABEL, ENTRY Y DEMAS
-        self.peso= StringVar()
-        self.altura= StringVar()
+        self.peso= IntVar()
+        self.altura= IntVar()
         self.fuente = font.Font(weight='bold')
         label_altura=tk.Label(self.__ventana, text="Altura", bg="green")
         self.__altura=tk.Entry(self.__ventana,textvariable=self.altura ,justify='right')
@@ -30,7 +30,7 @@ class Aplicacion(object):
         self.resultado = tk.Label(self.__ventana, textvariable=self.__mensaje, font=self.fuente, foreground='blue')
         self.diagnostico= tk.Label(self.__ventana,textvariable=self.__diagnostico, font=self.fuente, foreground='blue')
         opts = { 'ipadx': 10, 'ipady': 10 , 'sticky': 'nswe' }       
-            #  ---------- POSICIONAMIENTO DE LOS ELEMENTOS
+        #  ---------- POSICIONAMIENTO DE LOS ELEMENTOS
         label_altura.grid(row=0, column=0, **opts)
         self.__altura.grid(row=0,column=1,columnspan=4,**opts)
         label_cm.grid(row=0,column=5,**opts)
@@ -83,9 +83,3 @@ class Aplicacion(object):
         self.altura.set('')
         self.__mensaje.set('')
         self.__diagnostico.set('')
-
-def testAPP():
-    mi_app = Aplicacion()
-    
-if __name__ == '__main__':
-    testAPP()
