@@ -52,7 +52,7 @@ class Aplicacion(object):
                     altura= float(self.__altura.get())
                     imc = peso / (altura/100)**2
                     self.resultado.configure(foreground='green')
-                    self.__mensaje.set("Resultado= {}".format(round(imc,2)))
+                    self.__mensaje.set("Tu IMC es {} Kg/m2".format(round(imc,2)))
                     if imc < 18.5:
                         self.__diagnostico.set("Peso inferior al normal")
                     elif imc < 24.9:
@@ -81,6 +81,8 @@ class Aplicacion(object):
     def limpiar(self):
         self.peso.set('')
         self.altura.set('')
+        self.__mensaje.set('')
+        self.__diagnostico.set('')
 
 def testAPP():
     mi_app = Aplicacion()
