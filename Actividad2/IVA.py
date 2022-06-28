@@ -1,11 +1,5 @@
 from tkinter import *
-from tkinter import ttk
-from tkinter import font
 import tkinter as tk
-from turtle import bgcolor
-
-from click import command
-
 
 
 class Aplicacion(object):
@@ -37,8 +31,8 @@ class Aplicacion(object):
         labelPrecioTotal= tk.Label(contenedor,text="Precio con IVA").grid(row=6,column=1)
         precioTotal= tk.Entry(contenedor,textvariable= self.__precioTotal, justify='right').grid(row=6,column=2,**opts)
         # botones
-        botonCalcular= tk.Button(contenedor,text="Calcular",command=self.calcular).grid(row=7,column=1,**opts)
-        botonSalir= tk.Button(contenedor,text="Salir",command= self.__ventana.destroy).grid(row=7,column=2,**opts) 
+        botonCalcular= tk.Button(contenedor,text="Calcular",command=self.calcular,bg='light green').grid(row=7,column=1,**opts)
+        botonSalir= tk.Button(contenedor,text="Salir",command= self.__ventana.destroy,bg='red').grid(row=7,column=2,**opts) 
 
 
 
