@@ -1,0 +1,15 @@
+{
+    "__class__": "Manejador",
+    "personas": [
+        {
+            "__class__": "Persona",
+            "__atributos__": {
+                "nombre": "Emiliano",
+                "apellido": "Quirogaaaa",
+                "telefono": "1234564",
+                "altura": 1.83,
+                "peso": 120.0
+            }
+        }
+    ]
+}

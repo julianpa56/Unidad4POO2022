@@ -94,7 +94,7 @@ class FormularioProvincias(tk.LabelFrame):
 
 
     def crearProvinciaDesdeFormulario(self):
-        values = [e.get() for e in self.entries]
+        values = [e.get() for e in self.entries] ['asasdsd','asdasdas',1222,12]
         provincia=None
         try:
             provincia = Provincia(*values)
