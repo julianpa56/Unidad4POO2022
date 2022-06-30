@@ -21,7 +21,7 @@ class ObjectEncoder(object):
                     class_name=dProvincia.pop('__class__')
                     class_=eval(class_name)
                     atributos=dProvincia['__atributos__']
-                    unaProvincia=class_(**atributos)
+                    unaProvincia=Provincia(atributos["nombre"],atributos["capital"],atributos["cantidadHabitantes"],atributos["cantidadDepartamentos"])
                     manejador.agregarProvincia(unaProvincia)
             return manejador
     def guardarJSONArchivo(self, diccionario):

@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import StringVar, messagebox
 import json
 from urllib.request import urlopen
 
@@ -7,9 +7,9 @@ from claseProvincia import Provincia
 
 
 class ListaProvincias(tk.Frame):
-    def __init__(self,master,**styles): # ------ falta agregar **styles
+    def __init__(self,master,**kwargs): # ------ falta agregar **styles
         super().__init__(master)
-        self.lb = tk.Listbox(self,**styles) # ------ falta agregar **styles
+        self.lb = tk.Listbox(self,**kwargs) # ------ falta agregar **styles
         scroll = tk.Scrollbar(self, command=self.lb.yview)
         self.lb.config(yscrollcommand=scroll.set)
         scroll.pack(side=tk.RIGHT, fill=tk.Y)
@@ -32,13 +32,15 @@ class ListaProvincias(tk.Frame):
 
 
 class FormularioProvincias(tk.LabelFrame):
-    listaLabels=("Nombre","Capital","Cantidad de habitantes","Cantidad de departamentos","Temperatura","Sensacion Termica","Humedad")
+    listaLabels=("Nombre","Capital","Cantidad de habitantes","Cantidad de departamentos")
+    listaDatosApi=("Temperatura","Sensacion Termica","Humedad")
 
-    def __init__(self,master,**styles): # ------ falta agregar **styles
-        super().__init__(master, text="Datos Provincia", padx=10, pady=10,**styles) # ------ falta agregar **styles
+    def __init__(self,master,**kwargs): # ------ falta agregar **styles
+        super().__init__(master, text="Datos Provincia", padx=10, pady=10,**kwargs) # ------ falta agregar **styles
         self.frame = tk.Frame(self)
         self.entries = list(map(self.crearCampo, enumerate(self.listaLabels)))
         self.frame.pack()
+        self.crearDatosApi()
 
     def crearCampo(self, field):
         position, text = field
@@ -48,12 +50,48 @@ class FormularioProvincias(tk.LabelFrame):
         entry.grid(row=position, column=1, pady=5)
         return entry
 
+    def crearDatosApi(self):
+        self.temp= StringVar()
+        self.sens= StringVar()
+        self.hum= StringVar()
+        tk.Label(self.frame, text="Temperatura").grid(row=4, column=0, pady=5)
+        tk.Label(self.frame, textvariable=self.temp).grid(row=4, column=1, pady=5)
+        tk.Label(self.frame, text="Sensacion Termica").grid(row=5, column=0, pady=5)
+        tk.Label(self.frame, textvariable=self.sens).grid(row=5, column=1, pady=5)
+        tk.Label(self.frame, text="Humedad").grid(row=6, column=0, pady=5)
+        tk.Label(self.frame, textvariable=self.hum).grid(row=6, column=1, pady=5)
+
+
     def mostrarEstadoProvinciaEnFormulario(self, provincia:Provincia):
         values = (provincia.getNombre(), provincia.getCapital(),
                 provincia.getCantidadH(), provincia.getCantidadD())
         for entry, value in zip(self.entries, values):
             entry.delete(0, tk.END)
             entry.insert(0, value)
+        if provincia.getNombre():
+            auxProvincia= str(provincia.getNombre())
+            auxProvincia= auxProvincia.replace(" ","+")
+            self.datosProvincia(auxProvincia)
+
+    def datosProvincia(self,aux:str):
+        base_template = 'https://api.openweathermap.org/data/2.5/weather?q=*provincia*&appid=f708bb9e0d23c03bfda6a7a284db5033'
+        url_template= base_template.replace("*provincia*",aux)
+        response = urlopen(url_template)
+        resultado = json.loads(response.read().decode())
+        temperatura= str(resultado['main']['temp'])
+        temperatura = float(temperatura)
+        temperatura-= 273.15
+        self.temp.set("{} °C".format(round(temperatura,1)))
+        sensacionTermica= str(resultado['main']['feels_like'])
+        sensacionTermica= float(sensacionTermica)
+        sensacionTermica-= 273.15
+        self.sens.set("{} °C".format(round(sensacionTermica,1)))
+        humedad= str(resultado['main']['humidity'])
+        self.hum.set("{} %".format(humedad))
+
+
+        # °C = K − 273.15
+
 
     def crearProvinciaDesdeFormulario(self):
         values = [e.get() for e in self.entries]
@@ -98,15 +136,13 @@ class ActualizarProvincia(FormularioProvincias):
         self.btn_delete.config(command=callback)
 
 
-class VistaProvincia:
-    __ventana= None
-
+class VistaProvincia(tk.Tk):
     def __init__(self):
-        self.__ventana= tk.Tk()
-        self.__ventana.title("Aplicación del clíma")
-        self.listaProvincias = ListaProvincias(self.__ventana)
-        self.updateProvinciaForm= ActualizarProvincia(self.__ventana)
-        self.btn_new = tk.Button(self.__ventana, text="Agregar Provincia")        
+        super().__init__()
+        self.title("Aplicación del clíma")
+        self.listaProvincias = ListaProvincias(self,height=15)
+        self.updateProvinciaForm= ActualizarProvincia(self)
+        self.btn_new = tk.Button(self, text="Agregar Provincia")        
         self.listaProvincias.pack(side=tk.LEFT, padx=10, pady=10)
         self.updateProvinciaForm.pack(padx=10, pady=10)
         self.btn_new.pack(side=tk.BOTTOM, pady=5)
@@ -127,16 +163,3 @@ class VistaProvincia:
     def verProvinciaEnForm(self, provincia):
         self.updateProvinciaForm.mostrarEstadoProvinciaEnFormulario(provincia)
 
-        self.__ventana.mainloop()
-
-    def datosProvincia(self):
-        base_template = 'https://api.openweathermap.org/data/2.5/weather?q=*provincia*&appid=f708bb9e0d23c03bfda6a7a284db5033'
-        url_template= base_template.replace("*provincia*","variable de provincia")
-        response = urlopen(url_template)
-        resultado = json.loads(response.read().decode())
-        temperatura= str(resultado[0]["main"]["temp"])
-        sensacionTermica= str(resultado[0]["main"]["feels_like"])
-        humedad= str(resultado[0]["main"]["humidity"])
-
-
-        # °C = K − 273.15

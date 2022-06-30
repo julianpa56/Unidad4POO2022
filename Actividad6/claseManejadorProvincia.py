@@ -5,6 +5,7 @@ class ManejadorProvincia:
     def __init__(self):
         self.__provincias=[]
     def agregarProvincia(self, provincia):
+        provincia.rowid=ManejadorProvincia.indice
         ManejadorProvincia.indice+=1
         self.__provincias.append(provincia)
     def getListaProvincias(self):
@@ -19,7 +20,7 @@ class ManejadorProvincia:
         bandera = False
         i=0
         while not bandera and i < len(self.__provincias):
-            if self.__provincias[i].getNombre() == provincia.getNombre():
+            if self.__provincias[i].rowid == provincia.rowid:
                 bandera=True
             else:
                 i+=1

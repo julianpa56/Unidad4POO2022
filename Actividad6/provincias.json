@@ -1,6 +1,23 @@
 {
-    "nombre": "San Juan",
-    "capital": "San Juan",
-    "cantidadHabitantes": 40000,
-    "cantidadDepartamentos": 19
+    "__class__": "ManejadorProvincia",
+    "provincias": [
+        {
+            "__class__": "Provincia",
+            "__atributos__": {
+                "nombre": "San Juan",
+                "capital": "Capital",
+                "cantidadHabitantes": "10000",
+                "cantidadDepartamentos": "20"
+            }
+        },
+        {
+            "__class__": "Provincia",
+            "__atributos__": {
+                "nombre": "San Luis",
+                "capital": "San Luis",
+                "cantidadHabitantes": "20000",
+                "cantidadDepartamentos": "20"
+            }
+        }
+    ]
 }

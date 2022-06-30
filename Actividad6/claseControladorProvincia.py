@@ -2,7 +2,7 @@
 
 
 from Clases import NuevaProvincia, VistaProvincia
-
+from claseManejadorProvincia import ManejadorProvincia
 
 class ControladorProvincias(object):
 
@@ -15,7 +15,7 @@ class ControladorProvincias(object):
     def crearProvincia(self):
         nuevaProvincia = NuevaProvincia(self.vista).show()
         if nuevaProvincia:
-            provincia = self.repo.agregarPovincia(nuevaProvincia)
+            provincia = self.repo.agregarProvincia(nuevaProvincia)
             self.provincias.append(provincia)
             self.vista.agregarProvincia(provincia)
     def seleccionarProvincia(self, index):
